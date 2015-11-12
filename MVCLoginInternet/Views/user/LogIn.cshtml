@@ -1,0 +1,41 @@
+﻿@model MVCLoginInternet.Models.Login
+
+@{
+    ViewBag.Title = "LogIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>LogIn</h2>
+
+
+@using (Html.BeginForm())
+{ 
+    @Html.ValidationSummary("Login Failed, Check your login details");
+    <div>
+        <fieldset>
+            
+            <legend>Login Form</legend>
+            <div>@Html.LabelFor(u => u.email)</div>
+            <div>@Html.TextBoxFor(u => u.email)
+                @Html.ValidationMessageFor(u => u.email)
+            </div>
+
+            <div>@Html.LabelFor(u => u.password)</div>
+            <div>@Html.PasswordFor(u => u.password)
+                @Html.ValidationMessageFor(u => u.password)
+            </div>
+            <br />
+            <input type="submit" value="LogIn" />
+        </fieldset>
+    </div>
+    
+     <p>
+        @Html.ActionLink("Register", "Registration") if you don't have an account.
+    </p>
+}
+
+<section class="social" id="socialLoginForm">
+    <h2>Use another service to log in.</h2>
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>
+

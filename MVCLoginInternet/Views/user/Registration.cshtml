@@ -1,0 +1,50 @@
+﻿@model MVCLoginInternet.Models.userModel
+
+@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Registration</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary("Create user failed, check your details");
+    <div>
+        <fieldset>
+            <legend>Create User</legend>
+
+            <div>@Html.LabelFor(u => u.email)</div>
+            <div>@Html.TextBoxFor(u => u.email)
+                @Html.ValidationMessageFor(u => u.email)
+            </div>
+
+            <div>@Html.LabelFor(u => u.password)</div>
+            <div>@Html.PasswordFor(u => u.password)
+                @Html.ValidationMessageFor(u => u.password)
+            </div>
+
+            <div>@Html.LabelFor(u => u.userName)</div>
+            <div>@Html.TextBoxFor(u => u.userName)
+                @Html.ValidationMessageFor(u => u.userName)
+            </div>
+
+            <div>@Html.LabelFor(u => u.firstName)</div>
+            <div>@Html.TextBoxFor(u => u.firstName)
+                @Html.ValidationMessageFor(u => u.firstName)
+            </div>
+
+            <div>@Html.LabelFor(u => u.lastName)</div>
+            <div>@Html.TextBoxFor(u => u.lastName)
+                @Html.ValidationMessageFor(u => u.lastName)
+            </div>
+
+            <br /><br />
+            <input type="submit" value="Create User" />
+        </fieldset>
+    </div>
+    
+    
+    
+}

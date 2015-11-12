@@ -1,0 +1,127 @@
+﻿@model List<MVCLoginInternet.user>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var grid = new WebGrid(source: Model, canPage: true, rowsPerPage: 10);
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<h2>List</h2>
+
+            <style type="text/css">
+                /*Here we will add css for style webgrid*/
+                .webgrid-table {
+                    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                    font-size: 1.2em;
+                    width: 100%;
+                    display: table;
+                    border-collapse: separate;
+                    border: solid 1px #98BF21;
+                    background-color: white;
+                }
+
+                    .webgrid-table td, th {
+                        border: 1px solid #98BF21;
+                        padding: 3px 7px 2px;
+                    }
+
+                .webgrid-header {
+                    background-color: #A7C942;
+                    color: #FFFFFF;
+                    padding-bottom: 4px;
+                    padding-top: 5px;
+                    text-align: left;
+                }
+
+                .webgrid-footer {
+                }
+
+                .webgrid-row-style {
+                    padding: 3px 7px 2px;
+                }
+
+                .webgrid-alternating-row {
+                    background-color: #EAF2D3;
+                    padding: 3px 7px 2px;
+                }
+
+                .center{  
+                      display: block;
+                      margin-left: auto;
+                      margin-right: auto;
+                }
+            </style>
+
+<div id="content">
+
+    @using (Html.BeginForm("DeleteSelected", "user", FormMethod.Post))
+    {
+
+   @grid.GetHtml(
+        tableStyle: "webgrid-table",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        rowStyle: "webgrid-row-style",
+        columns: grid.Columns(
+            grid.Column(format: @<text><input type="checkbox" name="ids" value="@item.userId"/></text>, header: "select"),
+            grid.Column(columnName: "firstName", header: "First Name"),
+            grid.Column(columnName: "lastName", header: "Last Name"),
+            grid.Column(columnName: "userName", header: "Twitter Name"),
+            grid.Column(columnName: "email", format: @<text><a href="mailto:@item.email">@item.email</a></text>),
+            grid.Column(format: @<text><a href="Edit User">@Html.ActionLink("Edit", "Edit", new { id=item.userId })</a></text>, header: "Edit")
+            ))
+
+        <br />
+        <input id="btnDelete" type="submit" value="Delete selected" />
+    }
+
+    <input type="hidden" value="@Html.Raw(Html.AttributeEncode(ViewBag.CurrentUserGuid))" id="mode" />
+    </div>
+ 
+  <br /><br />
+
+<div style="position: absolute;left:440px; width:800px">
+    <a class="twitter-timeline"  data-widget-id="659684039234682880"  data-screen-name="@Html.Raw(Html.AttributeEncode(ViewBag.MyURL))" ></a>
+
+</div>
+  
+        <script>!function (d, s, id) {
+         var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + "://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); }
+        }(document, "script", "twitter-wjs");
+
+        </script>
+
+    
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var onDeleteRecord = function (event) {
+         
+            var dTable = $(".webgrid-table");
+            var chkboxes = dTable.find("tr input[type='checkbox']:checked");
+            var checkBoxVals = chkboxes.map(function () { return $(this).val(); }).toArray();
+            var userLoggedin = '@(System.Web.HttpContext.Current.User.Identity.Name)';
+            var mode = document.getElementById('mode').value;
+
+           
+
+            for (i = 0; i < checkBoxVals.length; i++) {
+                 if (checkBoxVals[i] == mode) {
+                     alert('You cant delete yourself');
+                     event.preventDefault();
+                 }
+            }
+                
+            
+        };
+
+        $(document).on("click", "#btnDelete", onDeleteRecord);
+    });
+</script>
+
+
+
